@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "crate-kit",
+  "name": "Crate kit",
+  "version": "0.1.0",
+  "author": {
+    "name": "AssetFurnace",
+    "url": "https://github.com/AssetFurnace"
+  },
+  "licence": "Apache-2.0",
+  "summary": "Crates, barrels and chests from a few numbers, or sized to fit a model you already have.",
+  "needs": {
+    "assetfurnace": ">=0.6.0",
+    "blender": ">=4.2"
+  },
+  "setup": ["python3", "-c", "print('crate kit ready')"],
+  "models": [],
+  "tools": [
+    {
+      "id": "build",
+      "label": "Build a crate",
+      "hint": "Pick a shape and a size. Add metal bands if you want it to look tougher.",
+      "inputs": [
+        {"id": "kind", "type": "choice", "label": "Shape", "choices": ["crate", "barrel", "chest"]},
+        {"id": "width", "type": "number", "label": "Width (m)", "min": 0.2, "max": 3.0},
+        {"id": "depth", "type": "number", "label": "Depth (m)", "min": 0.2, "max": 3.0},
+        {"id": "height", "type": "number", "label": "Height (m)", "min": 0.2, "max": 3.0},
+        {"id": "bands", "type": "toggle", "label": "Metal bands"}
+      ],
+      "run": ["{blender}", "-b", "-P", "crate.py", "--", "{out}", "--kind", "{kind}", "--width", "{width}", "--depth", "{depth}", "--height", "{height}", "--bands", "{bands}"],
+      "makes": "glb"
+    },
+    {
+      "id": "fit",
+      "label": "Fit a crate around a model",
+      "hint": "Pick a model you already made. You get a crate just big enough to hold it.",
+      "inputs": [
+        {"id": "model", "type": "model", "label": "Model to fit"},
+        {"id": "padding", "type": "number", "label": "Spare room (m)", "min": 0.0, "max": 1.0},
+        {"id": "kind", "type": "choice", "label": "Shape", "choices": ["crate", "chest"]}
+      ],
+      "run": ["{blender}", "-b", "-P", "crate.py", "--", "{out}", "--kind", "{kind}", "--model", "{model}", "--padding", "{padding}"],
+      "makes": "glb"
+    },
+    {
+      "id": "label",
+      "label": "Build a crate with a label",
+      "hint": "A crate with your picture on the front, like a shipping label or a logo.",
+      "inputs": [
+        {"id": "label", "type": "picture", "label": "Label picture"},
+        {"id": "width", "type": "number", "label": "Width (m)", "min": 0.2, "max": 3.0},
+        {"id": "height", "type": "number", "label": "Height (m)", "min": 0.2, "max": 3.0}
+      ],
+      "run": ["{blender}", "-b", "-P", "crate.py", "--", "{out}", "--kind", "crate", "--width", "{width}", "--depth", "{width}", "--height", "{height}", "--label", "{label}"],
+      "makes": "glb"
+    }
+  ]
+}
