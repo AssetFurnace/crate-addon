@@ -34,6 +34,8 @@ From the studio's Add-ons page, or the command line:
 ./lab addon run crate-kit label --input label=logo.png --input width=1 --input height=1 --yes
 ```
 
+The test run on our list gives the tools plain test values. It can't hand a model or a picture to a tool, so "fit" and "label" are named as not run while "build" is tested.
+
 ## How it is built
 
 - `addon.json` declares the tools and their inputs. The studio draws the forms from it.
